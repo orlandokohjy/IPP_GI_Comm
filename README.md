@@ -14,3 +14,5 @@ This repo is created for the IPP GI team to automate the extraction of the GI co
 6) Click the run button on the top bar / Press and Hold Shift then Enter
 7) The user is required to input the following details of the files in the following sequence:
   * Directory to the files - where all the files are being stored
+
+# After running the Python script without errors, run "Copy_Paste_Macro.xlsm" in the folder which will copy and paste the output to the existing excel files as required.
