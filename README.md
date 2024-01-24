@@ -2,6 +2,9 @@
 ## Objective
 This repo is created for the IPP GI team to automate the extraction of the GI commission information
 
+## Versioning (Google Sheets)
+https://docs.google.com/spreadsheets/d/1SijSo9OijpMbx15In4TKy77MsTg3UO6A2rXMQ-FG49o/edit?usp=sharing
+
 ## How to use
 ### Local Machine (your desktop/laptop)
 1) Install Anaconda on your local machine
