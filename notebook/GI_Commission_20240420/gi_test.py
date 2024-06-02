@@ -254,9 +254,9 @@ class GI_commission(Find_Cashbook):
             aig['ADVISER'] = aig['ADVISER'].str.replace('IPPFA - ', '')
 
             # rename the columns as per the working file ['TFAR', 'Policy no.', 'Pol Date', 'Insured Name', 'Comm.Recd (with GST)', 'GST Type']
-            columns = ['ADVISER', 'POLICY/ENDT', 'POLICY EFF DATE', 'DESCRIPTION/PARTICULARS', 'COMM AMT']
+            columns = ['ADVISER', 'POLICY/ENDT', 'POLICY EFF DATE', 'DESCRIPTION/PARTICULARS', 'COMM AMT', 'GST ON COMM']
 
-            rename_col = ['TFAR', 'Policy no.', 'Pol Date', 'Insured Name', 'Comm.Recd (with GST)']
+            rename_col = ['TFAR', 'Policy no.', 'Pol Date', 'Insured Name', 'Comm.Recd (with GST)', 'GST amt']
 
             label = dict(zip(columns, rename_col))
 
@@ -303,9 +303,9 @@ class GI_commission(Find_Cashbook):
             aia = aia.fillna(method='ffill')
 
             # rename the columns as per the working file ['TFAR', 'Policy no.', 'Pol Date', 'Insured Name', 'Comm.Recd (with GST)', 'GST Type']
-            columns = ['POLICY NAME', 'polno', 'Sum of TOTAL AMOUNT', 'TRANDTE']
+            columns = ['POLICY NAME', 'polno', 'Sum of TOTAL AMOUNT', 'TRANDTE', 'Sum of GST']
 
-            rename_col = ['Insured Name', 'Policy no.', 'Comm.Recd (with GST)', 'Pol Date']
+            rename_col = ['Insured Name', 'Policy no.', 'Comm.Recd (with GST)', 'Pol Date', 'GST amt']
 
             label = dict(zip(columns, rename_col))
 
@@ -354,9 +354,9 @@ class GI_commission(Find_Cashbook):
             allianz = allianz.dropna(subset=['Policy Number'])
 
             # rename the columns as per the working file ['TFAR', 'Policy no.', 'Pol Date', 'Insured Name', 'Comm.Recd (with GST)', 'GST amt']
-            columns = ['Policy Number', 'Agent Name', 'Policy Holder Name', 'Effective Date', 'Total Commission']
+            columns = ['Policy Number', 'Agent Name', 'Policy Holder Name', 'Effective Date', 'Total Commission', 'GST on Commission']
 
-            rename_col = ['Policy no.', 'TFAR', 'Insured Name', 'Pol Date', 'Comm.Recd (with GST)']
+            rename_col = ['Policy no.', 'TFAR', 'Insured Name', 'Pol Date', 'Comm.Recd (with GST)', 'GST amt']
 
             label = dict(zip(columns, rename_col))
 
@@ -424,7 +424,6 @@ class GI_commission(Find_Cashbook):
             # create 'Insurer' column
             allied['Insurer'] = 'ALLIED WORLD-GI'
             allied['Comm.Recd (with GST)'] = allied[['Commission', 'GST amt']].sum(axis=1)*(-1)
-            
             
             # remove the row without Policy no.
             allied = allied.dropna(subset=['Policy no.'])
@@ -784,9 +783,9 @@ class GI_commission(Find_Cashbook):
             fwd['Comm.Recd (with GST)'] = fwd['$ txn commission'] + fwd['$txn gst commission']
 
             # rename the columns as per the working file ['TFAR', 'Policy no.', 'Pol Date', 'Insured Name', 'Comm.Recd (with GST)', 'GST amt']
-            columns = ['policy_number', 'policyholder_full_name', 'GI Advisers', 'policy effective date']
+            columns = ['policy_number', 'policyholder_full_name', 'GI Advisers', 'policy effective date', '$ txn commission']
 
-            rename_col = ['Policy no.', 'Insured Name', 'TFAR', 'Pol Date']
+            rename_col = ['Policy no.', 'Insured Name', 'TFAR', 'Pol Date', 'GST amt']
 
             label = dict(zip(columns, rename_col))
 
@@ -1229,9 +1228,9 @@ class GI_commission(Find_Cashbook):
             msig = msig[(msig['Settlement Date'].isna()) & (msig['Total'].notna())]
 
             # rename the columns as per the working file ['TFAR', 'Policy no.', 'Pol Date', 'Insured Name', 'Comm.Recd (with GST)', 'GST amt']
-            columns = ['Policy No', 'Name of the Individual FA', 'Total', 'Effective Date']
+            columns = ['Policy No', 'Name of the Individual FA', 'Total', 'Effective Date', 'GST']
 
-            rename_col = ['Policy no.', 'TFAR', 'Comm.Recd (with GST)', 'Pol Date']
+            rename_col = ['Policy no.', 'TFAR', 'Comm.Recd (with GST)', 'Pol Date', 'GST amt']
 
             label = dict(zip(columns, rename_col))
 
@@ -1337,6 +1336,9 @@ class GI_commission(Find_Cashbook):
 
             # merge with QBE adviser code list to get adviser details
             qbe = pd.merge(qbe, qbe_adviser, how='left', left_on='REP_NAME', right_on='P400_USER')
+            
+            # remove rows without policy number
+            qbe = qbe.dropna(subset=['POLICY_NUMBER'])
 
             # create a new column "Agent Name"
             #qbe['Agent Name'] = qbe['LASTNAME'] + ' ' + qbe['FIRSTNAME']
@@ -1535,9 +1537,9 @@ class GI_commission(Find_Cashbook):
             nhi = nhi.iloc[1:]
 
             # rename the columns as per the working file ['TFAR', 'Policy no.', 'Pol Date', 'Insured Name', 'Comm.Recd (with GST)', 'GST amt']
-            columns = ['POLICY NO', 'SUB AGENT', 'INSURED NAME', 'COMM AMT (INC VAT)', 'POLICY START DATE']
+            columns = ['POLICY NO', 'SUB AGENT', 'INSURED NAME', 'COMM AMT (INC VAT)', 'POLICY START DATE', 'GST %']
 
-            rename_col = ['Policy no.', 'TFAR', 'Insured Name', 'Comm.Recd (with GST)', 'Pol Date']
+            rename_col = ['Policy no.', 'TFAR', 'Insured Name', 'Comm.Recd (with GST)', 'Pol Date', 'GST amt']
 
             label = dict(zip(columns, rename_col))
 
